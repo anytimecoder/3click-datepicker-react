@@ -1,6 +1,7 @@
 var React = require('react');
 var classNames = require('classnames');
 var isDefined = require('check-defined');
+var DataTable = require('./DataTable');
 /*
 displays datepicker in three separate stages for:
 1. Years
@@ -61,42 +62,37 @@ var Datepicker = React.createClass({
 		};
 	},
 
-	selectYear: function(event) {
+	selectItem: function(event) {
+		console.log('clicked');
 		if (isDefined(event, 'target.attributes.data-key')) {
 			this.setState({
 				valueYear: event.target.attributes['data-key'],
 				stage: 1
-			})
+			});
 		}
 	},
+
+	daysInMonth: function(month,year) {
+			return new Date(year, month, 0).getDate();
+	},
+
 	buildTable: function(stage, data) {
 
 	},
   buildSelectBox: function() {
-		let i,
-			rows = [],
-			values = [],
-			year = this.props.startYear;
-
+		let data = [],
+			i;
 		//show years
 		if (this.state.stage === 0) {
 			for (i = 0; i < 20; i++) {
-				values.push(<td key={year} data-key={year} onClick={this.selectYear}>{year}</td>);
-				year++;
-				if (i > 0 && (i + 1) % 5 === 0) {
-					rows.push(<tr key={i}>{values}</tr>);
-					values = [];
-				}
+				data[i] = 1982 + i;
 			}
-			//last batch of values
-			rows.push(<tr>{values}</tr>);
-			return (
-				<table>
-					{rows}
-				</table>
-			)
+			return <DataTable data={data} onClick={this.selectItem} />;
 		} else if (this.state.stage === 1) {
-
+			for (i = 0; i < 20; i++) {
+				data[i] = 2002 + i;
+			}
+			return <DataTable data={data} onClick={this.selectItem} />;
 		}
   },
 
@@ -130,7 +126,7 @@ var Datepicker = React.createClass({
 
 		return (
 			<div ref="dateContainer" className={classes} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
-				<input type="date" ref="value" name={this.props.name} value={this.state.value} disabled={this.props.disabled} placeholder={this.props.placeholder} value={this.state.value}/>
+				<input type="date" name={this.props.name} disabled={this.props.disabled} placeholder={this.props.placeholder} value={this.state.value}/>
 				{selectBox}
 			</div>
 		);
