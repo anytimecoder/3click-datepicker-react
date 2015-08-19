@@ -37,12 +37,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/makeitdoit/react-3click-datepicker.git"
+    "url": "git+https://github.com/anytimecoder/react-3click-datepicker.git"
   },
   "author": "Marius Kelpsa",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/makeitdoit/react-3click-datepicker/issues"
+    "url": "https://github.com/anytimecoder/react-3click-datepicker/issues"
   },
-  "homepage": "https://makeitdoit.github.io/react-3click-datepicker"
+  "homepage": "https://anytimecoder.github.io/react-3click-datepicker"
 }
