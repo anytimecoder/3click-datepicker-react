@@ -4,7 +4,7 @@ Simple, reusable, stylish and easy to use datepicker, perfect for birthdays or o
 
 # Planned features
 
-- Implement
+- Scrolling through years
 - 'Back button'
 - Close menu if clicked outside
 - Handle keys
