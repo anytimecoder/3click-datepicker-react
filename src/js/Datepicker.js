@@ -29,6 +29,7 @@ var Datepicker = React.createClass({
 	propTypes: {
     className: React.PropTypes.string,      // additional CSS class name for element
     disabled: React.PropTypes.bool,         // disable input field?
+		months: React.PropTypes.array, 					// array containing months (for use with other languages than English)
     name: React.PropTypes.string,           // name for the input field
     numberOfYears: React.PropTypes.number,  // number of years to display (last year would be startYear + numberOfYears)
     onBlur: React.PropTypes.func,           // onBlur handler: function(event) {}
@@ -42,7 +43,9 @@ var Datepicker = React.createClass({
 		return {
       className: undefined,
       disabled: false,
+			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       name: 'date',
+			numberOfYears: 20,
       onBlur: undefined,
   		onChange: undefined,
   		onFocus: undefined,
@@ -63,17 +66,39 @@ var Datepicker = React.createClass({
 	},
 
 	selectItem: function(event) {
-		console.log('clicked');
-		if (isDefined(event, 'target.attributes.data-key')) {
-			this.setState({
-				valueYear: event.target.attributes['data-key'],
-				stage: 1
-			});
+		let value;
+		if (isDefined(event, 'target.textContent')) {
+			value = event.target.textContent;
+
+			switch (this.state.stage) {
+				case 0:
+					this.setState({
+						valueYear: value,
+						stage: 1
+					});
+					break;
+				case 1:
+					this.setState({
+						valueMonth: this.props.months.indexOf(value),
+						stage: 2
+					});
+					break;
+				case 2:
+
+					this.setState({
+						valueDay: value,
+						stage: 0,
+						isOpen : false,
+						value: new Date(this.state.valueYear, this.state.valueMonth, value).toLocaleDateString()
+					});
+					break;
+			}
+
 		}
 	},
 
-	daysInMonth: function(month,year) {
-			return new Date(year, month, 0).getDate();
+	daysInMonth: function(year,month) {
+			return new Date(year, month + 1, 0).getDate();
 	},
 
 	buildTable: function(stage, data) {
@@ -83,16 +108,19 @@ var Datepicker = React.createClass({
 		let data = [],
 			i;
 		//show years
-		if (this.state.stage === 0) {
-			for (i = 0; i < 20; i++) {
-				data[i] = 1982 + i;
-			}
-			return <DataTable data={data} onClick={this.selectItem} />;
-		} else if (this.state.stage === 1) {
-			for (i = 0; i < 20; i++) {
-				data[i] = 2002 + i;
-			}
-			return <DataTable data={data} onClick={this.selectItem} />;
+		switch (this.state.stage) {
+			case 1:
+				return <DataTable data={this.props.months} onClick={this.selectItem} columns="4"/>;
+			case 2:
+				for (i = 0; i < this.daysInMonth(this.state.valueYear, this.state.valueMonth); i++) {
+					data[i] = i + 1;
+				}
+				return <DataTable data={data} onClick={this.selectItem} columns="8"/>;
+			default:
+				for (i = 0; i < this.props.numberOfYears; i++) {
+					data[i] = this.props.startYear + i;
+				}
+				return <DataTable data={data} onClick={this.selectItem} />;
 		}
   },
 

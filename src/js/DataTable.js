@@ -44,7 +44,9 @@ var DataTable = React.createClass({
 		rows.push(<tr>{values}</tr>);
 		return (
 			<table>
-				{rows}
+				<tbody>
+					{rows}
+				</tbody>
 			</table>
 		);
 	}
