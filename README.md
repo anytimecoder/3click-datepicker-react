@@ -1,4 +1,4 @@
-# 3lick Datepicker React component
+# 3click Datepicker React component
 
 Simple, reusable, stylish and easy to use datepicker, perfect for birthdays or other long spanning dates.
 
