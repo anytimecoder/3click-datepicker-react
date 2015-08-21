@@ -66,7 +66,7 @@ var Datepicker = React.createClass({
 	},
 
 	selectItem: function(event) {
-		let value;
+		var value;
 		if (isDefined(event, 'target.textContent')) {
 			value = event.target.textContent;
 
@@ -105,17 +105,17 @@ var Datepicker = React.createClass({
 
 	},
   buildSelectBox: function() {
-		let data = [],
+		var data = [],
 			i;
 		//show years
 		switch (this.state.stage) {
 			case 1:
-				return <DataTable data={this.props.months} onClick={this.selectItem} columns="4"/>;
+				return <DataTable data={this.props.months} onClick={this.selectItem} columns={4}/>;
 			case 2:
 				for (i = 0; i < this.daysInMonth(this.state.valueYear, this.state.valueMonth); i++) {
 					data[i] = i + 1;
 				}
-				return <DataTable data={data} onClick={this.selectItem} columns="8"/>;
+				return <DataTable data={data} onClick={this.selectItem} columns={8}/>;
 			default:
 				for (i = 0; i < this.props.numberOfYears; i++) {
 					data[i] = this.props.startYear + i;
@@ -137,11 +137,14 @@ var Datepicker = React.createClass({
 		});
 	},
 
+	handleChange: function(event) {
+     this.setState({value: event.target.value});
+  },
+
 	render: function() {
 		var classes = classNames('Datepicker', this.props.className, {
 			'placeholder' : this.state.value
 		});
-		var value = this.state.value ? this.state.value : this.props.placeholder;
 		var selectBox;
 
 		if (this.state.isOpen) {
@@ -154,7 +157,7 @@ var Datepicker = React.createClass({
 
 		return (
 			<div ref="dateContainer" className={classes} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
-				<input type="date" name={this.props.name} disabled={this.props.disabled} placeholder={this.props.placeholder} value={this.state.value}/>
+				<input type="date" name={this.props.name} disabled={this.props.disabled} placeholder={this.props.placeholder} value={this.state.value} onChange={this.handleChange}/>
 				{selectBox}
 			</div>
 		);

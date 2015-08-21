@@ -26,22 +26,21 @@ var DataTable = React.createClass({
 	},
 
 	render: function() {
-		let i,
-			rows = [],
+		var rows = [],
 			values = [],
 			data = this.props.data,
 			year = this.props.startYear;
 
-		for (i = 0; i < data.length; i++) {
-			values.push(<td key={data[i]} data-key={data[i]} onClick={this.props.onClick}>{data[i]}</td>);
+		data.forEach(function(item, i) {
+			values.push(<td key={item} onClick={this.props.onClick}>{item}</td>);
 			year++;
 			if (i > 0 && (i + 1) % this.props.columns === 0) {
 				rows.push(<tr key={i}>{values}</tr>);
 				values = [];
 			}
-		}
+		}.bind(this));
 		//last batch of values
-		rows.push(<tr>{values}</tr>);
+		rows.push(<tr key={data.length}>{values}</tr>);
 		return (
 			<table>
 				<tbody>
