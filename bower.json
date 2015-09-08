@@ -1,0 +1,32 @@
+{
+  "name": "3click-datepicker-react",
+  "version": "0.0.1",
+  "homepage": "https://github.com/anytimecoder/3click-datepicker-react",
+  "authors": [
+    "marius <marius.kelpsa@gmail.com>"
+  ],
+  "description": "Simple, reusable, stylish and easy to use datepicker, perfect for birthdays or other long spanning dates",
+  "main": "dist/3click-datepicker.min.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "datepicker",
+    "3click-datepicker",
+    "input",
+    "form",
+    "ui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
