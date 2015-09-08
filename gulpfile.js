@@ -1,5 +1,3 @@
-'use strict';
-
 var gulp = require("gulp");
 var del = require('del');
 var watchify = require('watchify');
@@ -11,75 +9,48 @@ var sourcemaps = require('gulp-sourcemaps');
 var assign = require('lodash.assign');
 var exorcist = require('exorcist');
 var browserSync = require('browser-sync').create();
-var jest = require('jest-cli');
-var httpProxy = require('http-proxy');
 
-//gulp.task('default', ['clean', 'js']);
+function createBundler() {
+  watchify.args.debug = true;
+  var bundler = watchify(browserify(watchify.args));
 
-gulp.task('clean', function(cb) {
-  del([
-    'dist/**/*',
-  ], cb);
-});
+  // Babel transform
+  bundler.transform(babelify.configure({
+    sourceMapRelative: 'app/js'
+  }));
 
-// Input file.
-watchify.args.debug = true;
-var bundler = watchify(browserify('./src/js/app.js', watchify.args));
-
-// Babel transform
-bundler.transform(babelify.configure({
-  sourceMapRelative: 'app/js'
-}));
-
-// On updates recompile
-bundler.on('update', bundle);
+  // On updates recompile
+  bundler.on('update', bundle);
+  return bundler;
+}
 
 function bundle() {
-
   gutil.log('Compiling JS...');
-
-  return bundler.bundle()
+  var b = createBundler();
+  b.add('./example/app.js');
+  return b.bundle()
     .on('error', function(err) {
       gutil.log(err.message);
       browserSync.notify("Browserify Error!");
       this.emit("end");
     })
-    .pipe(exorcist('src/js/dist/bundle.js.map'))
+    .pipe(exorcist('example/bundle.js.map'))
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./src/js/dist'))
+    .pipe(gulp.dest('./example'))
     .pipe(browserSync.stream({
       once: true
     }));
 }
 
-/**
- * Gulp task alias
- */
+
 gulp.task('bundle', function() {
   return bundle();
 });
 
-/**
- * First bundle, then serve from the ./app directory
- */
-gulp.task('default', ['bundle'], function() {
+gulp.task('dev', ['bundle'], function() {
   browserSync.init({
     server: {
-      baseDir: "./src",
-      middleware: proxyMiddleware
+      baseDir: "./example"
     }
   });
 });
-
-//create proxy to backend server
-var proxy = httpProxy.createProxyServer({
-  target: 'http://localhost:3000/'
-});
-
-var proxyMiddleware = function(req, res, next) {
-  if (req.url.indexOf('api') != -1) {
-    proxy.web(req, res);
-  } else {
-    next();
-  }
-};
