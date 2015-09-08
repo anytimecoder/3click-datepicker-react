@@ -66,7 +66,7 @@ var Datepicker = React.createClass({
 	},
 
 	selectItem: function(event) {
-		var value;
+		let value;
 		if (isDefined(event, 'target.textContent')) {
 			value = event.target.textContent;
 
@@ -157,7 +157,7 @@ var Datepicker = React.createClass({
 
 		return (
 			<div ref="dateContainer" className={classes} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
-				<input type="date" name={this.props.name} disabled={this.props.disabled} placeholder={this.props.placeholder} value={this.state.value} onChange={this.handleChange}/>
+				<input name={this.props.name} disabled={this.props.disabled} placeholder={this.props.placeholder} value={this.state.value} onChange={this.handleChange}/>
 				{selectBox}
 			</div>
 		);
