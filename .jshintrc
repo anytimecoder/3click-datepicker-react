@@ -1,0 +1,5 @@
+{
+  "harmony": true,
+  "esnext": true,
+  "node":true
+}

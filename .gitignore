@@ -28,4 +28,3 @@ node_modules
 
 dist
 bundle.js*
-.jshintrc
