@@ -2,7 +2,6 @@
 
 var React = require('react');
 var classNames = require('classnames');
-var isDefined = require('check-defined');
 var DataTable = require('./DataTable');
 /*
 displays datepicker in three separate stages for:
