@@ -1,33 +1,19 @@
-'use strict';
+import React from 'react'
 
-var React = require('react');
+class DataTable extends Component{
 
-var DataTable = React.createClass({
-
-	displayName: 'DataTable',
-
-	propTypes: {
+	static propTypes = {
     data: React.PropTypes.array,
 		columns: React.PropTypes.number,
 		onClick: React.PropTypes.func
 	},
 
-	getDefaultProps: function() {
-		return {
+	static defaultProps = {
 			data: [],
 			columns: 5,
-			onClick: function(event) {
-
-			}
-		};
 	},
 
-	getInitialState: function() {
-		return {
-		};
-	},
-
-	render: function() {
+	render() {
 		let rows = [],
 			values = [],
 		  data = this.props.data,
@@ -53,6 +39,6 @@ var DataTable = React.createClass({
 			</table>
 		);
 	}
-});
+}
 
 module.exports = DataTable;

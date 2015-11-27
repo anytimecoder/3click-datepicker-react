@@ -1,33 +1,42 @@
-'use strict';
+import React from 'react'
+import classNames from 'classnames'
+import DataTable from'./DataTable'
 
-var React = require('react');
-var classNames = require('classnames');
-var DataTable = require('./DataTable');
-/*
-displays datepicker in three separate stages for:
-1. Years
-2000  2001  2002  2003  2004
-2005  2006  2007  2008  2009
-2010  2011  2012  2013  2014
-2015  2016  2017  2018  2019
+/**
+ * displays datepicker in three separate stages for:
+ * 1. Years
+ * 2000  2001  2002  2003  2004
+ * 2005  2006  2007  2008  2009
+ * 2010  2011  2012  2013  2014
+ * 2015  2016  2017  2018  2019
+ *
+ * 2. Months
+ * * * January   February  March   April
+ * May       June      July    August
+ * September October November  December
+ *
+ * 3. Days
+ * 1   2   3   4   5   6   7
+ * 8   9   10  11  12  13  14
+ * 15  16  17  18  19  20  21
+ * * 22  23  24  25  26  27  28
+ * 29  30  31
+ **/
+class Datepicker extends Component {
 
-2. Months
-January   February  March   April
-May       June      July    August
-September October November  December
+	constructor(props) {
+		super(props)
+    this.state = {
+      isOpen: false,
+      stage: 0,
+      value: undefined,
+      valueYear: undefined,
+      valueMonth: undefined,
+      valueDay: undefined
+    }
+	}
 
-3. Days
-1   2   3   4   5   6   7
-8   9   10  11  12  13  14
-15  16  17  18  19  20  21
-22  23  24  25  26  27  28
-29  30  31
-*/
-var Datepicker = React.createClass({
-
-	displayName: 'Datepicker',
-
-	propTypes: {
+	static propTypes = {
     className: React.PropTypes.string,      // additional CSS class name for element
     disabled: React.PropTypes.bool,         // disable input field?
 		months: React.PropTypes.array, 					// array containing months (for use with other languages than English)
@@ -40,36 +49,19 @@ var Datepicker = React.createClass({
     startYear: React.PropTypes.number       // starting value of the year to show to the user
 	},
 
-	getDefaultProps: function() {
-		return {
-      className: undefined,
+	static defaultProps = {
       disabled: false,
 			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      name: 'date',
+      name: 'date ',
 			numberOfYears: 20,
-      onBlur: undefined,
-  		onChange: undefined,
-  		onFocus: undefined,
   		placeholder: 'yyyy-mm-dd',
       startYear: 1982
-		};
 	},
 
-	getInitialState: function() {
-		return {
-			isOpen: false,
-      stage: 0,
-			value: undefined,
-			valueYear: undefined,
-			valueMonth: undefined,
-			valueDay: undefined
-		};
-	},
-
-	selectItem: function(event) {
-		let value;
+	selectItem(event) {
+		let value
 		if (isDefined(event, 'target.textContent')) {
-			value = event.target.textContent;
+			value = event.target.textContent
 
 			switch (this.state.stage) {
 				case 0:
@@ -98,14 +90,14 @@ var Datepicker = React.createClass({
 		}
 	},
 
-	daysInMonth: function(year,month) {
+	daysInMonth(year,month) {
 			return new Date(year, month + 1, 0).getDate();
 	},
 
-	buildTable: function(stage, data) {
+	buildTable(stage, data) {
 
 	},
-  buildSelectBox: function() {
+  buildSelectBox() {
 		var data = [],
 			i;
 		//show years
@@ -125,7 +117,7 @@ var Datepicker = React.createClass({
 		}
   },
 
-	handleMouseDown: function(event) {
+	handleMouseDown(event) {
 		//do nothing is disabled
 		if (this.props.disabled || this.state.isOpen) {
 			return;
@@ -138,11 +130,11 @@ var Datepicker = React.createClass({
 		});
 	},
 
-	handleChange: function(event) {
+	handleChange(event) {
      this.setState({value: event.target.value});
   },
 
-	render: function() {
+	render() {
 		var classes = classNames('Datepicker', this.props.className, {
 			'placeholder' : this.state.value
 		});
@@ -157,13 +149,13 @@ var Datepicker = React.createClass({
 		}
 
 		return (
-			<div ref="dateContainer" className={classes} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
+			<div className={classes} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
 				<input name={this.props.name} disabled={this.props.disabled} placeholder={this.props.placeholder} value={this.state.value} onChange={this.handleChange}/>
 				{selectBox}
 			</div>
 		);
 	}
 
-});
+}
 
-module.exports = Datepicker;
+export default Datepicker
