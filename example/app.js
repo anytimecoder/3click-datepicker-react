@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Datepicker = require('../src/Datepicker.js');
+var Datepicker = require('../bundle.js');
 
 React.render(
   <Datepicker />,
